@@ -9,7 +9,7 @@ router.get("/get/:id",GetTodoId);
 
 router.post("/createTodo",CreateTodo);
 
-router.put("/updateTodo/:id",UpdateTodo);
+router.patch("/updateTodo/:id",UpdateTodo);
 
 router.delete("/deleteTodo/:id",DeleteTodo);
 

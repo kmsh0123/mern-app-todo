@@ -17,21 +17,31 @@ export const CreateTodo = async (req,res) =>{
     }
 }
 
-export const GetAllTodo = async(req,res)=>{
+export const GetAllTodo = async (req, res) => {
+    const { page = 1, limit = 5 } = req.query;
     try {
-    const getall = await TodoModel.find();
-    res.status(200).json({
-        success : true,
-        message : `Get All List`,
-        getall
-    })
+        const getall = await TodoModel.find()
+            .skip((page - 1) * limit) // Skip the number of documents
+            .limit(Number(limit)); // Limit the number of documents
+
+        const totalTodo = await TodoModel.countDocuments(); // Get total count of documents
+
+        res.status(200).json({
+            success: true,
+            message: `Get All List`,
+            page: Number(page),
+            totalPages: Math.ceil(totalTodo / limit),
+            totalTodo,
+            getall
+        });
     } catch (error) {
         res.status(500).json({
-            success : false,
-            message : error.message
-        })
+            success: false,
+            message: error.message
+        });
     }
-}
+};
+
 
 export const GetTodoId = async (req,res)=>{
   try {
